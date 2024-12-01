@@ -11,6 +11,6 @@
     "url": "https://github.com/kqarryzada/advent-of-code-2024"
   },
   "author": "kqarryzada",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "type": "module"
 }
