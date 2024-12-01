@@ -4,6 +4,7 @@
   "description": "Advent of Code 2024 Solutions.",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -12,5 +13,10 @@
   },
   "author": "kqarryzada",
   "license": "Apache-2.0",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@eslint/js": "^9.16.0",
+    "eslint": "^9.16.0",
+    "globals": "^15.13.0"
+  }
 }
