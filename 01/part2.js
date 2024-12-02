@@ -33,13 +33,9 @@ function solve(input) {
     let similarityScore = 0
     const {list1, list2} = parse(input)
 
-    for (let i = 0; i < list1.length; i++) {
-        const listOneValue = list1[i]
-
+    for (const listOneValue of list1) {
         let duplicateCount = 0
-        for (let j = 0; j < list2.length; j++) {
-            const listTwoValue = list2[j]
-
+        for (const listTwoValue of list2) {
             if (listTwoValue === listOneValue) {
                 duplicateCount++
             }
