@@ -47,14 +47,7 @@ function isRowSafe(row) {
         throw new Error('Invalid input.')
     }
 
-    // Anytime two subsequent values are equivalent, the row is considered
-    // unsafe.
-    if (row[0] === row[1]) {
-        return false
-    }
-
     const ascending = row[0] < row[1]
-
     let safe = true
     for (let i = 1; i < row.length; i++) {
         safe = isPairSafe(row[i - 1], row[i], ascending)
