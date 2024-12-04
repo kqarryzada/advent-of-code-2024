@@ -41,14 +41,23 @@ function parse(input) {
 }
 
 /**
- * Checks that the substring at the provided index matches the following form:
+ * This function attempts to fetch the `mul` instruction at the provided index
+ * in the input string. For example, consider the following string and an index
+ * with a value of `2`:
  * <pre>
- *   mul(\d+,\d+)
+ *   0&mul(21,3)
  * </pre>
+ *
+ * The 2nd index points to the letter "m", which is the start of a valid `mul`
+ * instruction. For this input, the function will return the string `mul(21,3)`.
+ *
+ * If the index does not point to a valid multiplication instruction, this
+ * function will return an empty string.
  *
  * @param input     A line from the input file.
  * @param i         The index to begin evaluation.
- * @returns {string}   Whether the substring is a valid instruction.
+ * @returns {string}   The `mul` instruction, or an empty string if the index
+ *                     did not point to a valid instruction.
  */
 function getMulInstruction(input, i) {
     if (input.substring(i, i + 4) !== "mul(") {
@@ -94,7 +103,7 @@ function getMulInstruction(input, i) {
  *   mul(4,9)
  * </pre>
  *
- * @param instruction   A `mul` instruction.
+ * @param instruction   A `mul` instruction string.
  * @returns {number}    The result of the multiplication.
  */
 function compute(instruction) {
@@ -143,6 +152,9 @@ function testValues() {
         //     console.log('Case "%s" passed.', input)
         // }
     }
+
+    // Reset the enabled flag.
+    enabled = true
 }
 
 function solve(input) {
