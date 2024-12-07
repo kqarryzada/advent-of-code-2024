@@ -111,28 +111,22 @@ function violatesRule(ruleMap, first, second) {
  * is slightly faster than creating a copy every time.
  *
  * @param update            The invalid update.
- * @param badNumber         The number in the incorrect position.
- * @param violatedNumber    The number that has a rule stating that `badNumber`
- *                          must come after it.
+ * @param badIndex          The index of the number in the incorrect position.
+ * @param violatedIndex     The index of the number that has a rule stating that
+ *                          it must precede the "bad number".
  *
- * @returns {[number]}      A new update, where the `badNumber` has been placed
- *                          after the `violatedNumber`.
+ * @returns {[number]}      A new update, where the "bad number" has been placed
+ *                          after the violated number.
  */
-function attemptFixUpdate(update, badNumber, violatedNumber) {
-    // Removing and inserting elements from arrays is slow. Instead, shift the
-    // values around so that 'badNumber' is placed after 'violatedNumber'.
-    let i = 0;
-    for (; i < update.length; i++) {
-        if (update[i] === badNumber) {
-            break
-        }
-    }
+function attemptFixUpdate(update, badIndex, violatedIndex) {
+    const badNumber = update[badIndex]
 
-    i++
-    for (; i < update.length; i++) {
+    // Removing and inserting elements from arrays is slow. Instead, shift the
+    // values around so that 'badIndex' is placed after 'violatedIndex'.
+    for (let i = badIndex + 1; i < update.length; i++) {
        update[i - 1] = update[i]
 
-        if (update[i] === violatedNumber) {
+        if (i === violatedIndex) {
             update[i] = badNumber
             break
         }
@@ -155,7 +149,7 @@ function isInvalidUpdate(update) {
         for (let j = i + 1; j < update.length; j++) {
             otherNumber = update[j]
             if (violatesRule(ruleMap, number, otherNumber)) {
-                return [true, number, otherNumber]
+                return [true, i, j]
             }
         }
     }
@@ -170,9 +164,9 @@ function solve(input) {
     // values from the working updates.
     let invalidUpdates = new Set()
     for (const update of updateList) {
-        const [isInvalid, first, second] = isInvalidUpdate(update)
+        const [isInvalid, badIndex, violatedIndex] = isInvalidUpdate(update)
         if (isInvalid) {
-            const newUpdate = attemptFixUpdate(update, first, second)
+            const newUpdate = attemptFixUpdate(update, badIndex, violatedIndex)
             invalidUpdates.add(newUpdate)
         }
     }
@@ -181,19 +175,20 @@ function solve(input) {
     // all updates until they are all fixed.
     let sum = 0
     while (invalidUpdates.size !== 0) {
+        const newSet = new Set()
         for (const update of invalidUpdates) {
-            invalidUpdates.delete(update)
-
-            const [isInvalid, first, second] = isInvalidUpdate(update)
+            const [isInvalid, badIndex, violatedIndex] = isInvalidUpdate(update)
             if (isInvalid) {
-                const newUpdate = attemptFixUpdate(update, first, second)
-                invalidUpdates.add(newUpdate)
+                const newUpdate = attemptFixUpdate(update, badIndex, violatedIndex)
+                newSet.add(newUpdate)
             }
             else {
                 // Now that the update has been fixed, extract the middle value.
                 sum += update[(update.length - 1) / 2]
             }
         }
+
+        invalidUpdates = newSet
     }
 
     console.log("The sum of all values from fixed updates is %d.", sum)
