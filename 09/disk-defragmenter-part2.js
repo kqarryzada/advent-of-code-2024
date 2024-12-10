@@ -86,7 +86,6 @@ function getNextFreeSpace(disk, startingIndex) {
 /**
  * Iterates through the disk backwards and identifies file blocks. This function
  * tries to find the leftmost empty space where the file block can be moved.
- * Once compaction is compete, a checksum is calculated.
  */
 function compact(disk) {
     let nextFreeSpaceIndex = getNextFreeSpace(disk, 0)

@@ -4,7 +4,6 @@ const input = readFileSync('./input.txt', 'utf-8').trimEnd();
 
 
 const FREE_BLOCK = -1
-const REALLOCATED_BLOCK = -2
 
 function parse(input) {
     const disk = []
@@ -35,14 +34,15 @@ function parse(input) {
  */
 function compact(disk) {
     let nextFreeSpaceIndex = disk.indexOf(FREE_BLOCK)
-    let lastFileIndex = disk.findLastIndex(e => e !== FREE_BLOCK && e !== REALLOCATED_BLOCK)
+    let lastFileIndex = disk.findLastIndex(e => e !== FREE_BLOCK)
 
     while (nextFreeSpaceIndex < lastFileIndex) {
         disk[nextFreeSpaceIndex] = disk[lastFileIndex]
-        disk[lastFileIndex] = REALLOCATED_BLOCK
+        disk[lastFileIndex] = FREE_BLOCK
 
-        nextFreeSpaceIndex = disk.indexOf(FREE_BLOCK)
-        lastFileIndex = disk.findLastIndex(e => e !== FREE_BLOCK && e !== REALLOCATED_BLOCK)
+        // Re-initialize the indexes. This must be done last.
+        nextFreeSpaceIndex = disk.indexOf(FREE_BLOCK, nextFreeSpaceIndex)
+        lastFileIndex = disk.findLastIndex(e => e !== FREE_BLOCK)
     }
 
     return lastFileIndex
