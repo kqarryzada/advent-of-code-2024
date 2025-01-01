@@ -1,0 +1,5 @@
+Advent of Code is a registered trademark that owns the puzzles and input files.
+
+The solutions in this repository are individually licensed under the Apache
+License Agreement, version 2.0. A copy of this license has been included in the
+repository under the "Apache-2.0-License" file.
